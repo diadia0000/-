@@ -15,7 +15,7 @@ typedef struct point{
 }point;
 point cube[SIZE][SIZE];
 
-void init(int fd){
+void init(){
     int i,j;
     int width = 10;
     int height = 4;
@@ -51,10 +51,10 @@ int main(){
         printf("open /dev/lcd error\n");
         return (-1);
     }
-    LCD_SetHandle(fd_lcd);
-    LCD_ClearScreen(fd);
+    LCD_SetHandle(fd);
+    LCD_ClearScreen();
     init();
-    show_game();
+    show_game(fd);
 //    while(1){
 //    
 //    }
