@@ -28,10 +28,10 @@ void init() {
     int i, j;
     for (i = 0; i < SIZE; i++) {
         for (j = 0; j < SIZE; j++) {
-            cube[i][j].x = j*weidth;
+            cube[i][j].x = j*width;
             cube[i][j].y = i * height;
-            number[i][j].x = j*weidth+1;
-            number[i][j].y = j*weidth;
+            number[i][j].x = j*width+1;
+            number[i][j].y = j*height;
         }
     }
 }
@@ -58,7 +58,7 @@ void generate_number(int fd){
     display.Count = sprintf((char*)display.Msg, (char)num);
     ret = ioctl(fd,LCD_IOCTL_WRITE,&display);
     Delay(delay_time);
-    LCD_printf("");
+    ret = LCD_printf(" ");
 
 }
 
