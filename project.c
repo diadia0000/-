@@ -21,9 +21,9 @@ typedef struct point {
 point cube[SIZE][SIZE]; // cube x,y point
 point number[SIZE][SIZE]; // generate number x,y point
 lcd_write_info_t display;
-int ret;
-int delay_time = 1000;
 
+int delay_time = 1000;
+int ret;
 void init() {
     int i, j;
     for (i = 0; i < SIZE; i++) {
@@ -31,13 +31,13 @@ void init() {
             cube[i][j].x = j*width;
             cube[i][j].y = i * height;
             number[i][j].x = j*width+1;
-            number[i][j].y = j*height;
+            number[i][j].y = i*height;
         }
     }
 }
 
 void show_game(int fd) {
-    int i, j;
+    int i,j;
     for (i = 0; i < SIZE; i++) {
         for (j = 0; j < SIZE; j++) {
             LCD_Cursor(fd, cube[i][j].x, cube[i][j].y);
@@ -51,14 +51,16 @@ void generate_number(int fd){
     time_t t;
     srand((unsigned) time(&t));
     int num = rand()%9;
-    int i = rand()%SIZE;
-    int j = rand()%SIZE;
+    int i,j = rand()%SIZE;
     LCD_Cursor(fd, number[i][j].x, number[i][j].y);
     char c = '0'+num;
     display.Count = sprintf((char*)display.Msg, c);
     ret = ioctl(fd,LCD_IOCTL_WRITE,&display);
     Delay(delay_time);
-    ret = LCD_fprintf(fd," ");
+    display.Count = sprintf((char*)display.Msg, "");
+    ret = ioctl(fd,LCD_IOCTL_WRITE,&display);
+
+    
 }
 
 
@@ -80,9 +82,8 @@ int main() {
     // main loop
     while (1) {
         generate_number(fd);
-        sleep(3);
+        Delay(10000);
     }
-
     close(fd);
     return 0;
 }
