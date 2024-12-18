@@ -51,14 +51,13 @@ void generate_number(int fd){
     time_t t;
     srand((unsigned) time(&t));
     int num = rand()%9;
-    int i,j = rand()%SIZE;
+    int i = rand()%SIZE;
+    int j = rand()%SIZE;
     LCD_Cursor(fd, number[i][j].x, number[i][j].y);
     char c = '0'+num;
-    display.Count = sprintf((char*)display.Msg, c);
-    ret = ioctl(fd,LCD_IOCTL_WRITE,&display);
+    LCD_fprintf(fd,c);
     Delay(delay_time);
-    display.Count = sprintf((char*)display.Msg, "");
-    ret = ioctl(fd,LCD_IOCTL_WRITE,&display);
+    LCD_fprintf(fd,"");
 
     
 }
