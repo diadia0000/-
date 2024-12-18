@@ -61,7 +61,7 @@ void generate_number(int fd){
     char str[2];
     str[0] = c;
     str[1] = '\0';
-    LCD_fprintf(fd,str);
+    LCD_fprintf(fd,"%s",str);
     Delay(delay_time);
     LCD_fprintf(fd," ");
     return;
