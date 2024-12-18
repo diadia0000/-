@@ -13,7 +13,6 @@
 #define SIZE 4
 #define width 4
 #define height 5
-#define LCD_MAX_HEIGHT 4 // LCD 的行數
 
 typedef struct point {
     int x, y; // cube mid point
@@ -23,6 +22,7 @@ point cube[SIZE][SIZE]; // cube x,y point
 point number[SIZE][SIZE]; // generate number x,y point
 lcd_write_info_t display;
 int ret;
+int delay_time = 1000;
 
 void init() {
     int i, j;
@@ -47,7 +47,6 @@ void show_game(int fd) {
     }
 }
 
-int delay_time = 4000;
 void generate_number(int fd){
     time_t t;
     srand((unsigned) time(&t));
@@ -55,11 +54,11 @@ void generate_number(int fd){
     int i = rand()%SIZE;
     int j = rand()%SIZE;
     LCD_Cursor(fd, number[i][j].x, number[i][j].y);
-    display.Count = sprintf((char*)display.Msg, (char)num);
+    char c = '0'+num;
+    display.Count = sprintf((char*)display.Msg, c);
     ret = ioctl(fd,LCD_IOCTL_WRITE,&display);
     Delay(delay_time);
-    ret = LCD_printf(" ");
-
+    ret = LCD_fprintf(fd," ");
 }
 
 
@@ -81,6 +80,7 @@ int main() {
     // main loop
     while (1) {
         generate_number(fd);
+        sleep(3);
     }
 
     close(fd);
