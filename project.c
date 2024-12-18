@@ -6,6 +6,7 @@
 #include <errno.h>
 #include<stdlib.h>
 #include<time.h>
+#include<string.h>
 #include "asm-arm/arch-pxa/lib/creator_pxa270_lcd.h"
 #include "asm-arm/arch-pxa/lib/def.h"
 #include "creator_lib.h"
@@ -34,6 +35,7 @@ void init() {
             number[i][j].y = i*height;
         }
     }
+    return;
 }
 
 void show_game(int fd) {
@@ -45,6 +47,7 @@ void show_game(int fd) {
             ret = ioctl(fd,LCD_IOCTL_WRITE,&display);
         }
     }
+    return;
 }
 
 void generate_number(int fd){
@@ -54,11 +57,14 @@ void generate_number(int fd){
     int i = rand()%SIZE;
     int j = rand()%SIZE;
     LCD_Cursor(fd, number[i][j].x, number[i][j].y);
-    char c = '0'+num;
-    LCD_fprintf(fd,c);
+    char c = num+'0';
+    char str[2];
+    str[0] = c;
+    str[1] = '\0';
+    LCD_fprintf(fd,str);
     Delay(delay_time);
-    LCD_fprintf(fd,"");
-
+    LCD_fprintf(fd," ");
+    return;
     
 }
 
